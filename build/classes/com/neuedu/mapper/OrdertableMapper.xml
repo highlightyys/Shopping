@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neuedu.mapper.OrdertableMapper" >
+  <resultMap id="BaseResultMap" type="com.neuedu.po.Ordertable" >
+    <id column="orderid" property="orderid" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="DATE" />
+    <result column="totalprice" property="totalprice" jdbcType="DOUBLE" />
+    <result column="orderstatus" property="orderstatus" jdbcType="VARCHAR" />
+    <result column="orderaddressid" property="orderaddressid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="ordernum" property="ordernum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.neuedu.vo.OrderVo" id="OrdervoMap">
+  	<id column="orderid" property="orderid"/>
+  	<result column="ordernum" property="ordernum"/>
+  	<result column="time" property="time"/>
+  	<result column="totalprice" property="totalprice"/>
+  	<result column="orderstatus" property="orderstatus"/>
+  	<result column="orderaddressid" property="orderaddressid"/>
+  	<collection property="orderdetaillist" ofType="com.neuedu.vo.OrderdetailVO">
+  		<id column="proid" property="proid"/>
+  		<result column="count" property="count"/>
+  		<result column="picurl" property="picurl"/>
+  		<result column="proname" property="proname"/>
+  		<result column="priceSale" property="priceSale"/>
+  	</collection>
+  	
+  
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List" >
+    orderid, time, totalprice, orderstatus, orderaddressid, userid, ordernum
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from ordertable
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from ordertable
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.neuedu.po.Ordertable" >
+    insert into ordertable (orderid, time, totalprice, 
+      orderstatus, orderaddressid, userid, 
+      ordernum)
+    values (#{orderid,jdbcType=INTEGER}, #{time,jdbcType=DATE}, #{totalprice,jdbcType=DOUBLE}, 
+      #{orderstatus,jdbcType=VARCHAR}, #{orderaddressid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{ordernum,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neuedu.po.Ordertable" >
+    insert into ordertable
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="totalprice != null" >
+        totalprice,
+      </if>
+      <if test="orderstatus != null" >
+        orderstatus,
+      </if>
+      <if test="orderaddressid != null" >
+        orderaddressid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="ordernum != null" >
+        ordernum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=DATE},
+      </if>
+      <if test="totalprice != null" >
+        #{totalprice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderstatus != null" >
+        #{orderstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="orderaddressid != null" >
+        #{orderaddressid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="ordernum != null" >
+        #{ordernum,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.po.Ordertable" >
+    update ordertable
+    <set >
+      <if test="time != null" >
+        time = #{time,jdbcType=DATE},
+      </if>
+      <if test="totalprice != null" >
+        totalprice = #{totalprice,jdbcType=DOUBLE},
+      </if>
+      <if test="orderstatus != null" >
+        orderstatus = #{orderstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="orderaddressid != null" >
+        orderaddressid = #{orderaddressid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="ordernum != null" >
+        ordernum = #{ordernum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neuedu.po.Ordertable" >
+    update ordertable
+    set time = #{time,jdbcType=DATE},
+      totalprice = #{totalprice,jdbcType=DOUBLE},
+      orderstatus = #{orderstatus,jdbcType=VARCHAR},
+      orderaddressid = #{orderaddressid,jdbcType=INTEGER},
+      userid = #{userid,jdbcType=INTEGER},
+      ordernum = #{ordernum,jdbcType=VARCHAR}
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </update>
+  
+<!--   自己写的 -->
+	<select id="selectOrderidByOrdernum" resultType="java.lang.Integer" parameterType="string" >
+   	 select orderid from ordertable 
+   	 <where>
+   	 <if test="_parameter != null and _parameter!=''">and ordernum=#{_parameter}</if>
+	</where>
+	</select>
+ 
+	<select id="selectAllOrders" resultType="com.neuedu.po.Ordertable" >
+   	 select * from ordertable 
+	</select> 
+
+	<select id="selectOrderInfo" parameterType="int" resultMap="OrdervoMap" >
+   	 SELECT ot.*, od.proid, od.count,p.picurl,p.proname,p.price_sale priceSale FROM ordertable ot,orderdetail od, product p 
+   	 WHERE p.proid = od.proid and od.orderid = ot.orderid and ot.userid=#{userid} ORDER BY ot.orderstatus 
+	</select> 
+	
+	<select id="selectStatusByOrderid" parameterType="int" resultType="string" >
+   	 select orderstatus from ordertable WHERE orderid = #{orderid}
+	</select>
+	
+	
+  
+</mapper>

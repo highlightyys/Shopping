@@ -1,0 +1,12 @@
+#top_nav{
+	width:1190px ;
+	height:35px ;
+	background: #f4f4f4;
+}
+#top_left_nav{
+	list-style:;
+}
+.top_nav{
+	float: left;
+	margin: 10px;
+}

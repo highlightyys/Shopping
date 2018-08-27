@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neuedu.mapper.OrderdetailMapper" >
+  <resultMap id="BaseResultMap" type="com.neuedu.po.Orderdetail" >
+    <id column="detailid" property="detailid" jdbcType="INTEGER" />
+    <result column="proid" property="proid" jdbcType="INTEGER" />
+    <result column="orderid" property="orderid" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="total" property="total" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    detailid, proid, orderid, count, total
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from orderdetail
+    where detailid = #{detailid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from orderdetail
+    where detailid = #{detailid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.neuedu.po.Orderdetail" >
+    insert into orderdetail (detailid, proid, orderid, 
+      count, total)
+    values (#{detailid,jdbcType=INTEGER}, #{proid,jdbcType=INTEGER}, #{orderid,jdbcType=INTEGER}, 
+      #{count,jdbcType=INTEGER}, #{total,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neuedu.po.Orderdetail" >
+    insert into orderdetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="detailid != null" >
+        detailid,
+      </if>
+      <if test="proid != null" >
+        proid,
+      </if>
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="detailid != null" >
+        #{detailid,jdbcType=INTEGER},
+      </if>
+      <if test="proid != null" >
+        #{proid,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.po.Orderdetail" >
+    update orderdetail
+    <set >
+      <if test="proid != null" >
+        proid = #{proid,jdbcType=INTEGER},
+      </if>
+      <if test="orderid != null" >
+        orderid = #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where detailid = #{detailid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neuedu.po.Orderdetail" >
+    update orderdetail
+    set proid = #{proid,jdbcType=INTEGER},
+      orderid = #{orderid,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER},
+      total = #{total,jdbcType=DOUBLE}
+    where detailid = #{detailid,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByOrderid" parameterType="int" resultType="com.neuedu.vo.OrderdetailVO">
+  	select od.*,p.proname,p.price_sale priceSale,p.picurl from orderdetail od,product p where od.orderid=#{orderid} and od.proid = p.proid
+  </select>
+  
+    <delete id="deleteByOrderid" parameterType="java.lang.Integer" >
+    delete from orderdetail
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </delete>
+</mapper>

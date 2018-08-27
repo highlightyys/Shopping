@@ -1,0 +1,56 @@
+*{
+	margin: auto;
+}
+#top_nav{
+	height: 40px;
+	width: 100%;
+	background: ghostwhite;
+}
+#manager{
+	height: 40px;
+	width:70%;
+	margin: auto;
+}
+li{
+	height:40px;
+	line-height: 40px;
+	float:left;
+	padding-left:30px;
+	list-style: none;
+	color: #555;
+}
+#main{
+	height: 1000px;
+	width:1300px;
+}
+#function{
+	height: 100px;
+	width: 100%;
+	background: burlywood;
+}
+#manageType,#manageProduct{
+	height: 50px;
+	width: 150px;
+	float:left;
+	margin-left: 40px;
+	margin-top: 25px ;
+	background: gold;
+	line-height: 50px;
+	text-align: center;
+}
+table{
+	width: 90%;
+	margin: 10px auto;
+	border: 1px solid #000000;
+}
+table th{
+	border: 1px solid #000000;
+	background: lavender;
+	height: 40px;
+}
+
+table td{
+	border: 1px solid #000000;
+	text-align: center;
+	height: 40px;	
+}

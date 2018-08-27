@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neuedu.mapper.CartMapper" >
+  <resultMap id="BaseResultMap" type="com.neuedu.po.Cart" >
+    <id column="cartid" property="cartid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="proid" property="proid" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cartid, userid, proid, count
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cart
+    where cartid = #{cartid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cart
+    where cartid = #{cartid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.neuedu.po.Cart" >
+    insert into cart (cartid, userid, proid, 
+      count)
+    values (#{cartid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{proid,jdbcType=INTEGER}, 
+      #{count,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neuedu.po.Cart" >
+    insert into cart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cartid != null" >
+        cartid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="proid != null" >
+        proid,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cartid != null" >
+        #{cartid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="proid != null" >
+        #{proid,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.po.Cart" >
+    update cart
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="proid != null" >
+        proid = #{proid,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cartid = #{cartid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neuedu.po.Cart" >
+    update cart
+    set userid = #{userid,jdbcType=INTEGER},
+      proid = #{proid,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER}
+    where cartid = #{cartid,jdbcType=INTEGER}
+  </update>
+  
+<!--   自己寫的 -->
+	<select id="getListByUserId" parameterType="java.lang.Integer" resultType="com.neuedu.vo.CartVo">
+	select c.cartid,c.count,p.proname,p.price_sale priceSale,p.price_avg priceAvg,p.descript,p.picurl,p.proid 
+	from cart c,product p where c.proid = p.proid and c.userid = #{userid}
+	</select>
+  
+  	<select id="getOrdertableInfoByCartid" parameterType="java.lang.Integer" resultType="com.neuedu.vo.CartVo">
+	select c.*,p.price_sale priceSale from cart c LEFT JOIN product p
+	on c.proid = p.proid WHERE cartid = #{cartid}
+	</select>
+  	
+  	<select id="search" parameterType="Cart" resultType="Cart">
+  		select * from cart where userid = #{userid} and proid = #{proid}
+  	</select>
+  	<select id="getCartId" parameterType="Cart" resultType="int">
+  		select cartid from cart where userid = #{userid} and proid = #{proid} and count=#{count}
+  	</select>
+  
+</mapper>

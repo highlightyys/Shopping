@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.neuedu.mapper.AddressMapper" >
+  <resultMap id="BaseResultMap" type="com.neuedu.po.Address" >
+    <id column="addressid" property="addressid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="consignee" property="consignee" jdbcType="VARCHAR" />
+    <result column="conphone" property="conphone" jdbcType="INTEGER" />
+    <result column="detailaddr" property="detailaddr" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    addressid, userid, consignee, conphone, detailaddr
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from address
+    where addressid = #{addressid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from address
+    where addressid = #{addressid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.neuedu.po.Address" >
+    insert into address (addressid, userid, consignee, 
+      conphone, detailaddr)
+    values (#{addressid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{consignee,jdbcType=VARCHAR}, 
+      #{conphone,jdbcType=INTEGER}, #{detailaddr,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neuedu.po.Address" >
+    insert into address
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="addressid != null" >
+        addressid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="consignee != null" >
+        consignee,
+      </if>
+      <if test="conphone != null" >
+        conphone,
+      </if>
+      <if test="detailaddr != null" >
+        detailaddr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="addressid != null" >
+        #{addressid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="consignee != null" >
+        #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="conphone != null" >
+        #{conphone,jdbcType=INTEGER},
+      </if>
+      <if test="detailaddr != null" >
+        #{detailaddr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.po.Address" >
+    update address
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="consignee != null" >
+        consignee = #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="conphone != null" >
+        conphone = #{conphone,jdbcType=INTEGER},
+      </if>
+      <if test="detailaddr != null" >
+        detailaddr = #{detailaddr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where addressid = #{addressid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neuedu.po.Address" >
+    update address
+    set userid = #{userid,jdbcType=INTEGER},
+      consignee = #{consignee,jdbcType=VARCHAR},
+      conphone = #{conphone,jdbcType=INTEGER},
+      detailaddr = #{detailaddr,jdbcType=VARCHAR}
+    where addressid = #{addressid,jdbcType=INTEGER}
+  </update>
+  
+<!--   自己写的 -->
+  
+  <select id="selectByUserid" resultType="com.neuedu.po.Address" parameterType="java.lang.Integer" >
+    SELECT addressid,consignee,conphone,detailaddr from address where userid = #{userid}
+  </select>
+  
+  <update id="updateAddressById" parameterType="Address" >
+  	update address set consignee = #{consignee},conphone = #{conphone},detailaddr=#{detailaddr} where addressid = #{addressid}
+  </update>
+  
+</mapper>
